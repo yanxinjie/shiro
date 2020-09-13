@@ -1,5 +1,6 @@
 package com.yxj.shiro.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * @Desc
  * @date 2020/9/13 14:29
  */
-public class User {
+public class User implements Serializable {
     private int id;
 
     private String username;

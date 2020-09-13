@@ -1,12 +1,14 @@
 package com.yxj.shiro.domain;
 
+import java.io.Serializable;
+
 /**
  * @author 严新捷
  * @Type Permission.java
  * @Desc
  * @date 2020/9/13 14:29
  */
-public class Permission {
+public class Permission implements Serializable {
 
     private int id;
 

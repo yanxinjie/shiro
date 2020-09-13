@@ -18,6 +18,7 @@ import java.util.List;
  */
 @Component
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private RoleMapper roleMapper;
 
@@ -26,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findAllUserInfoByUsername(String username) {
+
+        // 这里可以加缓存
+
         User user = userMapper.findByUsername(username);
 
         //用户的角色集合

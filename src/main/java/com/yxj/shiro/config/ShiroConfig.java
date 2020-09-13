@@ -8,6 +8,9 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -86,6 +89,9 @@ public class ShiroConfig {
         //如果不是前后端分离，则不必设置下面的sessionManager
         securityManager.setSessionManager(sessionManager());
 
+        //使用自定义的cacheManager
+        securityManager.setCacheManager(redisCacheManager());
+
         //设置realm（推荐放到最后，不然某些情况会不生效）
         securityManager.setRealm(passwordRealm());
 
@@ -132,8 +138,45 @@ public class ShiroConfig {
         CustomSessionManager customSessionManager = new CustomSessionManager();
 
         //超时时间，默认 30分钟，会话超时；方法里面的单位是毫秒
-        customSessionManager.setGlobalSessionTimeout(20000);
+//        customSessionManager.setGlobalSessionTimeout(20000);
+
+        // 配置session持久化
+        customSessionManager.setSessionDAO(redisSessionDAO());
 
         return customSessionManager;
+    }
+
+    /**
+     * 配置redisManager
+     * @return
+     */
+    @Bean
+    public RedisManager redisManager() {
+        RedisManager redisManager = new RedisManager();
+        redisManager.setHost("192.168.50.26");
+        redisManager.setPort(32790);
+        redisManager.setPassword("root123");
+        return redisManager;
+    }
+
+
+    public RedisCacheManager redisCacheManager() {
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisManager());
+        // 设置过期时间，单位是秒，建议5min
+        redisCacheManager.setExpire(20);
+        return redisCacheManager;
+    }
+
+    /**
+     * 自定义session持久化
+     * @return
+     */
+    public RedisSessionDAO redisSessionDAO() {
+        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        redisSessionDAO.setRedisManager(redisManager());
+        // 设置过期时间，单位是秒，默认是1800s
+        redisSessionDAO.setExpire(1800);
+        return redisSessionDAO;
     }
 }

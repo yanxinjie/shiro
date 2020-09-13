@@ -35,8 +35,8 @@ public class PasswordRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         System.out.println("授权 doGetAuthorizationInfo");
-        String username = (String)principals.getPrimaryPrincipal();
-        User user = userService.findAllUserInfoByUsername(username);
+        User newUser = (User) principals.getPrimaryPrincipal();
+        User user = userService.findAllUserInfoByUsername(newUser.getUsername());
 
         List<String> stringRoleList = new ArrayList<>();
         List<String> stringPermissionList = new ArrayList<>();
@@ -88,6 +88,6 @@ public class PasswordRealm extends AuthorizingRealm {
             return null;
         }
 
-        return new SimpleAuthenticationInfo(username, user.getPassword(), this.getClass().getName());
+        return new SimpleAuthenticationInfo(user, user.getPassword(), this.getClass().getName());
     }
 }
