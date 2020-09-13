@@ -2,6 +2,7 @@ package com.yxj.shiro.config;
 
 import com.yxj.shiro.filter.CustomRolesOrAuthorizationFilter;
 import com.yxj.shiro.realm.PasswordRealm;
+import com.yxj.shiro.session.CustomSessionIdGenerator;
 import com.yxj.shiro.session.CustomSessionManager;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
@@ -181,6 +182,8 @@ public class ShiroConfig {
         redisSessionDAO.setRedisManager(redisManager());
         // 设置过期时间，单位是秒，默认是1800s
         redisSessionDAO.setExpire(1800);
+        // 设置自定义SessionIdGenerator
+        redisSessionDAO.setSessionIdGenerator(new CustomSessionIdGenerator());
         return redisSessionDAO;
     }
 
@@ -196,6 +199,7 @@ public class ShiroConfig {
     }
 
     /**
+     * api controller层
      * 加入注解的使用，不加入这个AOP注解不生效(shiro的注解 例如 @RequiresGuest)
      * @return
      */
