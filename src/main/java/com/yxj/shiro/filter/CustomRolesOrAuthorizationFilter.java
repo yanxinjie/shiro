@@ -5,6 +5,7 @@ import org.apache.shiro.web.filter.authz.AuthorizationFilter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import java.io.IOException;
 
 /**
  * @author 严新捷 自定义Filter

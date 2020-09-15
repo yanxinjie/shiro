@@ -147,6 +147,7 @@ public class ShiroConfig {
 
         // 配置session持久化
         customSessionManager.setSessionDAO(redisSessionDAO());
+        customSessionManager.setSessionIdCookieEnabled(true);
 
         return customSessionManager;
     }
@@ -169,7 +170,7 @@ public class ShiroConfig {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager());
         // 设置过期时间，单位是秒，建议5min
-        redisCacheManager.setExpire(20);
+        redisCacheManager.setExpire(5 * 60);
         return redisCacheManager;
     }
 

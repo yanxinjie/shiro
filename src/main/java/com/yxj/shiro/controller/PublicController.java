@@ -3,8 +3,11 @@ package com.yxj.shiro.controller;
 import com.yxj.shiro.domain.JsonData;
 import com.yxj.shiro.domain.UserQuery;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.crazycake.shiro.RedisSessionDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("pub")
 public class PublicController {
+
     @RequestMapping("need_login")
     public JsonData needLogin(){
 
@@ -70,7 +74,6 @@ public class PublicController {
         Map<String,Object> info = new HashMap<>();
         try {
             UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(userQuery.getName(), userQuery.getPwd());
-
             subject.login(usernamePasswordToken);
 
             info.put("msg","登录成功");
