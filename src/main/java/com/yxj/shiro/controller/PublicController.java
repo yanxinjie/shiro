@@ -1,8 +1,10 @@
 package com.yxj.shiro.controller;
 
 import com.yxj.shiro.domain.JsonData;
+import com.yxj.shiro.domain.User;
 import com.yxj.shiro.domain.UserQuery;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -32,7 +34,13 @@ public class PublicController {
 
     @RequestMapping("need_login")
     public JsonData needLogin(){
+        Subject subject = SecurityUtils.getSubject();
 
+        if(subject.getPrincipals() != null ){
+            Session session = subject.getSession();
+            User user = (User) subject.getPreviousPrincipals().getPrimaryPrincipal();
+            session.removeAttribute(user);
+        }
         return JsonData.buildSuccess("温馨提示：请使用对应的账号登录",-2);
 
     }

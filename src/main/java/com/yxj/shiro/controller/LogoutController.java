@@ -23,19 +23,7 @@ public class LogoutController {
 
     @RequestMapping("/logout")
     public JsonData findMyPlayRecord(){
-
-        Subject subject = SecurityUtils.getSubject();
-
-        if(subject.getPrincipals() != null ){
-            Session session = subject.getSession();
-            User user = (User) subject.getPreviousPrincipals().getPrimaryPrincipal();
-            session.removeAttribute(user);
-        }
-
-        SecurityUtils.getSubject().logout();
-
         return JsonData.buildSuccess("logout成功");
-
     }
 
 }
